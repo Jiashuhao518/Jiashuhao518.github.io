@@ -1,5 +1,5 @@
 name: "Shuhao's blog"
-description: "翩帆的个人技术博客"
+description: "书昊的个人技术博客"
 
 avatar: https://Jiashuhao518.github.io/images/avatar.png
 favicon: https://Jiashuhao518.github.io/images/favicon.ico
@@ -18,16 +18,16 @@ excerpt_separator: <!-- more -->
 
 footer-links:
   zhihu: 
-  email: xiongyunhan@outlook.com
+  email: jiashuhao518@outlook.com
   facebook:
-  github: pianfan
+  github: Jiashuhao518
   rss: # just type anything here for a working RSS icon
   twitter: 
   youtube:
 
 footer-text: Copyright (c) 2024 Pianfan
 
-url: https://pianfan.github.io
+url: https://Jiashuhao518.github.io
 
 permalink: /:title/
 paginate_path: /page:num/
