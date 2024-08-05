@@ -2,7 +2,7 @@ name: "Shuhao's blog"
 description: "书昊的个人技术博客"
 
 avatar: https://Jiashuhao518.github.io/images/constraint.jpg
-favicon: https://Jiashuhao518.github.io/images/constraint.jpg
+favicon: https://Jiashuhao518.github.io/images/favicon.ico
 
 navigation:
   - name: 首页
