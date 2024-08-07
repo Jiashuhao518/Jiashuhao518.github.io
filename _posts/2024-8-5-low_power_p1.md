@@ -24,3 +24,13 @@ CMOS电路中的功耗分为动态功耗和静态功耗，公式为：
 $$
 P= \overbrace{   \underbrace{ \frac{1}{2}\cdot C \cdot V_{DD}^2\cdot f \cdot N_{sw}}_{翻转功耗}   +  \underbrace{ Q_{sc}\cdot V_{DD}\cdot f \cdot N_{sw}}_{短路功耗}  }^{动态功耗}+ \underbrace{\overbrace{I_{leak}\cdot V_{DD}}^{静态功耗}}_{漏电流功耗}
 $$
+
+其中$C$为负载电容，$V_{DD}$为电源电压，$f$为时钟频率，$N_{sw}$为开关次数，$Q_{sc}$为短路电荷，$I_{leak}$为漏电流。
+
+### 动态功耗
+
+包括翻转功耗和短路功耗。
+
+**翻转功耗**
+
+CMOS电路翻转过程中引起的功耗。
