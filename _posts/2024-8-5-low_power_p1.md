@@ -146,5 +146,160 @@ $$
 - 阈值电压随温度呈线性减小；
 - 总体：与$V_{GS}$和温度都相关，温度翻转效应。
 
-#### 栅泄露和结泄露电流
+## 常用低功耗设计技术
 
+- 工艺：
+  - 随着工艺尺寸缩小，晶体管平均功耗降低
+  - 特殊工艺，如FDSOI，可以大大降低芯片功耗
+- 芯片架构
+  - 多电压域架构（Multiple supply Voltage）
+  - 电源关断（Power Shut Off）
+  - 动态电压频率调节（DVFS）
+- 芯片实现
+  - 时钟门控（Clock Gating）
+  - 多阈值电压 & 多沟道长度
+  - 多位寄存器优化
+  - 翻转率 & 负载系统优化
+
+### 工艺
+
+- 先进工艺制程
+  - 先进工艺节点降低供电电压，提升性能、功耗与芯片集成度
+- 特殊工艺制程
+  - 一些特殊工艺制程，由于特殊晶体管特殊结构，也能够明显降低功耗例如: FD-SOI工艺
+    - vs 16nm FinFET:平面工艺，低成本
+    - vs 28nm:低漏电，高性能
+- LPP工艺和LPE工艺是两种不同的半导体制程，它们都是针对不同的性能和功耗需求而设计的。LPP是Low Power Plus的缩写，意思是低功耗增强型，它相比于LPE（Low Power Early，低功耗早期型）有更高的性能和更低的功耗。LPP工艺一般是在LPE工艺成熟后推出的，它可以利用更优化的设计和工艺参数来提升芯片的表现。
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
+    src="../images/image-20230629104506057.png" width = "65%" alt=""/>
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      先进工艺制程PPA比较
+  	</div>
+</center>
+
+### 芯片架构
+
+- 多电压域架构 (Multiple Supply Voltage)
+  - 根据芯片不同模块时序特性，采用不用电压供电
+    - 高速模块:高电压供电，晶体管延时小
+    - 低速模块:低电压供电，晶体管延时大，功耗低
+- 电源关断 (Power Shut off)
+  - 根据芯片的工作模式，在模块不需要工作时，关断电源供电
+    - 节省芯片漏电功耗与翻转功耗(例如，时钟网络的翻转功耗)
+- 芯片实现影响:
+  - 需要特殊电源管理库文件 (PMK Kits) : Power Switch /lsolation /StateRetention / Always On Cell / Voltage Regulator / Level Shifter
+  - 增加芯片电源网络设计复杂度:多电源网络设计，Power Gating 单元相关分析，低功耗单元供电分析
+- 动态电压频率调节(DVFS: Dynamic Voltage and Frequency Scaling）
+  - 根据模块工作模式，动态调节模块的工作频率和电压
+    - 节约芯片翻转功耗&内部功耗
+- 增加时序收敛难度
+  - STA需要分析大量的工作模式，保证芯片时序收敛
+  - 时钟域切换、模式切换需要特殊控制
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
+    src="../images/image-20230629110415060.png" width = "65%" alt=""/>
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      多电压域架构/电源关断
+  	</div>
+</center>
+
+### 芯片实现
+
+- 时钟门控(Clock Gating)
+  - 在寄存器时钟端加入门控逻辑，减少时钟网络的翻转功耗
+- 多阈值电压&多沟道长度
+  - 多阈值电压: HVT/RVT/LVT/SLVT单元速度变快，漏电变大
+  - 多沟道长度:C14/C16，沟道越长，速度越慢，漏电越小
+  - 采用“多阈值电压&多沟道长度”技术，关键路径采用“高速&高功耗单元”实现，非关键路径采用“低速&低功耗单元实现
+- 芯片实现影响
+  - 增加时序分析收敛，提高时钟树要求
+  - 需要丰富的设计经验，在有限的设计周期内完成时序、功耗的优化与收敛
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
+    src="../images/image-20230629111142012.png" width = "65%" alt=""/>
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      时钟门控/多阈值电压单元
+  	</div>
+</center>  
+
+- 多位寄存器优化(Multi-Bit Register)
+  - 将Single-Bit DFF 合并为 Multi-Bit DFF (2-Bit、Bit)，降低 DFF 总面积和功耗，降低时钟网络面积和功耗
+- 芯片实现影响:
+  - 选择合适的MB单元，并且保证芯片局部密度，保证绕通性
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
+    src="../images/image-20230629111520393.png" width = "65%" alt=""/>
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      多位寄存器优化
+  	</div>
+</center>
+
+- 翻转率&负载协同优化
+  - 原理:减小高翻转率信号的负载，降低 Switching &Interna/功耗
+- 实现举例
+  - 例子1:缩短高翻转率信号线的长度，从而减小线上负载
+  - 例子2:将高翻转率信号接到低内部负载的单元输入端口
+  - 例子3:将高翻转率信号线两端的单元合并为一个单元，变外部负载为内部负载
+- 芯片实现影响
+  - 考虑时序、绕线影响
+  - Toggle文件反标率
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
+    src="../images/image-20230629113117196.png" width = "65%" alt=""/>
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      低功耗实现示例（shorten/pin swap/merge）
+  	</div>
+</center>  
+
+## 低功耗设计技术总结
+
+五个层次上对系统的功耗进行优化：
+
+- 系统级优化：软硬件协同设计、用户ISA、算法优化和协同综合等方法，最多可以节省大于70%功耗；
+- 行为级优化：排序、流水线及行为转换等优化方法，最多可以节省40%~70%的功耗；
+- RTL级优化：停时钟、预计算、操作数隔离、状态分配等计数，最多可以节省25%~40%的功耗；
+- 逻辑级优化：逻辑重构、工艺映射、重新分配引脚的顺序和相位等方法，最多可以节省15%~25%的功耗；
+- 物理级优化：扇出的优化、晶体管的大小调整、分块时钟树设计和毛刺的消除等，最多可以节省10%~15%的功耗。
+
+<center>
+    <img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
+    src="../images/image-20230629134449799.png" width = "65%" alt=""/>
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">
+      系统功耗优化层次
+  	</div>
+</center>  
