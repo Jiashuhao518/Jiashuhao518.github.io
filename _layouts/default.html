@@ -16,19 +16,56 @@
       </div>
     </div>
 
+    <div class="wrapper-footer-mobile">
+      <footer class="footer">
+        {% include footer.html %}
+      </footer>
+    </div>
+
     {% include analytics.html %}
+
+    {% if page.toc==true %}
+    <script>
+      document.getElementById("main").classList.add("withtoc");
+    </script>
+    {% endif %}
+
+    <script>
+      (function () {
+        var body = document.body;
+        var buttons = document.querySelectorAll('.theme-dot');
+        var search = document.getElementById('search-input');
+        var savedTheme = window.localStorage.getItem('shuhao-theme') || 'ink';
+        var themes = ['ink', 'paper', 'terminal'];
+
+        if (themes.indexOf(savedTheme) === -1) {
+          savedTheme = 'ink';
+        }
+
+        function setTheme(theme) {
+          body.setAttribute('data-theme', theme);
+          buttons.forEach(function (button) {
+            button.classList.toggle('is-active', button.getAttribute('data-theme') === theme);
+          });
+          window.localStorage.setItem('shuhao-theme', theme);
+        }
+
+        setTheme(savedTheme);
+        buttons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            setTheme(button.getAttribute('data-theme'));
+          });
+        });
+
+        document.addEventListener('keydown', function (event) {
+          if (event.key === '/' && search && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+            event.preventDefault();
+            search.focus();
+          }
+        });
+      })();
+    </script>
   </body>
-
-  {% if page.toc==true %}
-  <script>
-    document.getElementById("main").classList.add("withtoc");
-  </script>
-  {% endif %}
-
-  <div class="wrapper-footer-mobile">
-    <footer class="footer">
-      {% include footer.html %}
-    </footer>
 
 
 </html>

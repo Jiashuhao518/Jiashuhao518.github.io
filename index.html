@@ -2,20 +2,22 @@
 layout: default
 ---
 <div class="search-container">
-  <input type="text" id="search-input" placeholder="search blog posts..." style="width: 90%;
-    height: 35px;
-    color: #333;
-    background-color: rgba(227,231,236,.2);
-    line-height: 35px;
-    margin-top: 20px;
-    padding:10px 16px;
-    border: 1px solid #c0c0c0;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 17px;
-    outline: none;
-    box-sizing: border-box;
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);">
+  <div class="home-intro">
+    <p class="eyebrow">PERSONAL KNOWLEDGE BASE · 2024—NOW</p>
+    <h2>把复杂的芯片系统，拆成清晰的工程笔记。</h2>
+    <p class="intro-copy">记录逻辑综合、低功耗设计与芯片集成实践，也记录每一次从问题到答案的推导过程。</p>
+    <div class="intro-stats" aria-label="博客信息">
+      <span><strong>{{ site.posts.size }}</strong> 篇文章</span>
+      <span><strong>IC</strong> Design</span>
+      <span><strong>⌘</strong> Keep building</span>
+    </div>
+  </div>
+
+  <label class="search-label" for="search-input">搜索技术文章 <kbd>/</kbd></label>
+  <div class="search-field">
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input type="text" id="search-input" placeholder="输入关键词，例如 low power、SMVFUG…">
+  </div>
   <ul id="results-container"></ul>
 </div>
 
